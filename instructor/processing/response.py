@@ -450,6 +450,7 @@ def handle_response_model(
         Mode.WRITER_TOOLS: handle_writer_tools,
         Mode.WRITER_JSON: handle_writer_json,
         Mode.BEDROCK_JSON: handle_bedrock_json,
+        Mode.BEDROCK_JSON_STREAM: handle_bedrock_json,
         Mode.BEDROCK_TOOLS: handle_bedrock_tools,
         Mode.PERPLEXITY_JSON: handle_perplexity_json,
         Mode.OPENROUTER_STRUCTURED_OUTPUTS: handle_openrouter_structured_outputs,
@@ -644,6 +645,7 @@ def handle_reask_kwargs(
         # Bedrock modes
         Mode.BEDROCK_TOOLS: reask_bedrock_tools,
         Mode.BEDROCK_JSON: reask_bedrock_json,
+        Mode.BEDROCK_JSON_STREAM: reask_bedrock_json,
         # Perplexity modes
         Mode.PERPLEXITY_JSON: reask_perplexity_json,
         # OpenRouter modes

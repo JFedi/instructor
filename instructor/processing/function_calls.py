@@ -155,7 +155,10 @@ class OpenAISchema(BaseModel):
 
         if mode == Mode.BEDROCK_JSON:
             return cls.parse_bedrock_json(completion, validation_context, strict)
-
+        
+        if mode == Mode.BEDROCK_JSON_STREAM:
+            return cls.parse_bedrock_json(completion, validation_context, strict)
+        
         if mode == Mode.BEDROCK_TOOLS:
             return cls.parse_bedrock_tools(completion, validation_context, strict)
 

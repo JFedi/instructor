@@ -351,4 +351,8 @@ BEDROCK_HANDLERS = {
         "reask": reask_bedrock_tools,
         "response": handle_bedrock_tools,
     },
+    Mode.BEDROCK_JSON_STREAM: {
+        "reask": reask_bedrock_json,
+        "response": handle_bedrock_json,
+    },
 }

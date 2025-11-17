@@ -61,6 +61,21 @@ def process_potential_object(potential_object, partial_mode, partial_model, **kw
     obj = partial_model.model_validate(obj, strict=None, **kwargs)
     return obj
 
+def clean_fences(text: str) -> str:
+    # Remove leading fence
+    if text.startswith("```json"):
+        text = text[len("```json"):]
+    if text.startswith("json"):
+        text = text[len("json"):]
+    elif text.startswith("```"):
+        text = text[len("```"):]
+
+    # Remove trailing fence
+    if text.endswith("```"):
+        text = text[:-len("```")]
+
+    # Strip whitespace around
+    return text.strip()
 
 def _process_generic_arg(
     arg: Any,
@@ -156,6 +171,8 @@ class PartialBase(Generic[T_Model]):
     def from_streaming_response(
         cls, completion: Iterable[Any], mode: Mode, **kwargs: Any
     ) -> Generator[T_Model, None, None]:
+        if mode == Mode.BEDROCK_JSON_STREAM : 
+            completion = completion["stream"]
         json_chunks = cls.extract_json(completion, mode)
 
         if mode in {Mode.MD_JSON, Mode.GEMINI_TOOLS}:
@@ -281,6 +298,9 @@ class PartialBase(Generic[T_Model]):
         specific handling to extract the relevant JSON data."""
         for chunk in completion:
             try:
+                if mode == Mode.BEDROCK_JSON_STREAM:
+                    if "contentBlockDelta" in chunk:
+                        yield clean_fences(chunk["contentBlockDelta"]["delta"]["text"])
                 if mode == Mode.MISTRAL_STRUCTURED_OUTPUTS:
                     yield chunk.data.choices[0].delta.content
                 if mode == Mode.MISTRAL_TOOLS:

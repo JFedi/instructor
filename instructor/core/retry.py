@@ -179,7 +179,8 @@ def retry_sync(
 
     # Pre-extract stream flag to avoid repeated lookup
     stream = kwargs.get("stream", False)
-
+    if mode == Mode.BEDROCK_JSON_STREAM:
+        kwargs = {k: v for k, v in kwargs.items() if k != "stream"}
     # Track all failed attempts
     failed_attempts: list[FailedAttempt] = []
 
