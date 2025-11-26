@@ -119,9 +119,9 @@ if all(importlib.util.find_spec(pkg) for pkg in ("vertexai", "jsonref")):
     __all__ += ["from_vertexai"]
 
 if importlib.util.find_spec("boto3") is not None:
-    from .providers.bedrock.client import from_bedrock, from_bedrock_stream
+    from .providers.bedrock.client import from_bedrock
 
-    __all__ += ["from_bedrock", "from_bedrock_stream"]
+    __all__ += ["from_bedrock"]
 
 if importlib.util.find_spec("writerai") is not None:
     from .providers.writer.client import from_writer
