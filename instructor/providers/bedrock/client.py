@@ -14,6 +14,7 @@ from ...core.client import AsyncInstructor, Instructor
 def from_bedrock(
     client: boto3.client,
     mode: instructor.Mode = instructor.Mode.BEDROCK_TOOLS,
+    stream: bool = False,
     async_client: Literal[False] = False,
     **kwargs: Any,
 ) -> Instructor: ...
@@ -23,6 +24,7 @@ def from_bedrock(
 def from_bedrock(
     client: boto3.client,
     mode: instructor.Mode = instructor.Mode.BEDROCK_TOOLS,
+    stream: bool = False,
     async_client: Literal[True] = True,
     **kwargs: Any,
 ) -> AsyncInstructor: ...
@@ -41,7 +43,7 @@ def handle_bedrock_json(
 
 def from_bedrock(
     client: BaseClient,
-    mode: instructor.Mode = instructor.Mode.BEDROCK_JSON,
+    mode: instructor.Mode = None,
     stream: bool = False,
     async_client: bool = False,
     _async: bool | None = None,  # Deprecated, use async_client
@@ -50,8 +52,12 @@ def from_bedrock(
     """
     Accepts both 'async_client' (preferred) and '_async' (deprecated) for async mode.
     """
-    if stream:
-        mode = instructor.Mode.BEDROCK_JSON_STREAM
+    if not mode :
+        if stream:
+            mode = instructor.Mode.BEDROCK_JSON_STREAM
+        else:
+            mode = instructor.Mode.BEDROCK_JSON
+   
     valid_modes = {
         instructor.Mode.BEDROCK_TOOLS,
         instructor.Mode.BEDROCK_JSON,
